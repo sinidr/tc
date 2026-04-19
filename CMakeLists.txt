@@ -29,6 +29,7 @@ target_include_directories(tc_common_settings INTERFACE "plugin/include")
 ###########
 add_subdirectory(app)
 add_subdirectory(plugin)
+add_subdirectory(crash_reporter)
 
 #########
 # tests #

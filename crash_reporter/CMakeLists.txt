@@ -1,0 +1,16 @@
+
+find_package(cpptrace REQUIRED)
+
+set(lib_name "crash_reporter")
+
+add_library(${lib_name} SHARED)
+add_library(tc::crash_reporter ALIAS ${lib_name})
+
+target_sources(${lib_name} PRIVATE src/plugin.cpp)
+
+target_compile_definitions(${lib_name} PRIVATE PLUGIN_BUILDING)
+
+target_link_libraries(${lib_name} PRIVATE
+        tc::common
+        cpptrace::cpptrace
+)

@@ -20,6 +20,7 @@ class TcConan(ConanFile):
 
     def requirements(self):
         self.requires("boost/1.84.0", visible=False)
+        self.requires("cpptrace/1.0.4", visible=False)
 
     def layout(self):
         compiler = str(self.settings.compiler)
