@@ -3,6 +3,11 @@ cmake_minimum_required(VERSION 3.21)
 # tc for 'Technical Challenge'
 project(tc VERSION 1.0 LANGUAGES CXX)
 
+###########
+# options #
+###########
+option(ENABLE_SANITIZERS "Build with Address Sanitizer" OFF)
+
 ####################
 # generic settings #
 ####################
@@ -24,6 +29,11 @@ target_compile_features(tc_common_settings INTERFACE cxx_std_20)
 
 # common include directories
 target_include_directories(tc_common_settings INTERFACE "plugin/include")
+
+if (ENABLE_SANITIZERS)
+    target_compile_options(tc_common_settings INTERFACE "-fsanitize=address")
+    target_link_options(tc_common_settings INTERFACE "-fsanitize=address")
+endif()
 
 ###########
 # sources #

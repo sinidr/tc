@@ -54,6 +54,10 @@ target_sources(${crashing_app}
         test_crash_reporter_app.cpp
 )
 
+target_link_libraries(${crashing_app} PRIVATE
+    tc::common  # necessary if building with asan
+)
+
 add_executable(${test_name})
 
 target_sources(${test_name}
