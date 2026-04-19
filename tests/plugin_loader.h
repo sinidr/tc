@@ -34,6 +34,18 @@ public:
 #endif
     }
 
+    PluginLoader(PluginLoader&& other) noexcept : handle_(other.handle_) {
+        other.handle_ = nullptr;
+    }
+
+    PluginLoader& operator=(PluginLoader&& other) noexcept {
+        if (this != &other) {
+            handle_ = other.handle_;
+            other.handle_ = nullptr;
+        }
+        return *this;
+    }
+
     PluginLoader(const PluginLoader&) = delete;
     PluginLoader& operator=(const PluginLoader&) = delete;
 
@@ -53,7 +65,7 @@ private:
     void* handle_ = nullptr;
 };
 
-std::string get_plugin_path() {
+inline std::string get_plugin_path() {
     const char* env = std::getenv("PLUGIN_PATH");
     if (env) return env;
 

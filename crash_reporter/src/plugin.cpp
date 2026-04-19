@@ -24,7 +24,7 @@ namespace {
 extern "C" {
 
 PLUGIN_API int plugin_init(void) {
-    std::signal(SIGSEGV, signal_handler);
+    std::ignore = std::signal(SIGSEGV, signal_handler);
     return 0;
 }
 

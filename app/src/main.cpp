@@ -11,9 +11,9 @@
 #include <vector>
 
 #ifdef _WIN32
-    #include <windows.h>
+#include <windows.h>
 #else
-    #include <dlfcn.h>
+#include <dlfcn.h>
 #endif
 
 using plugin_init_fn = int (*)();
@@ -21,7 +21,7 @@ using plugin_get_name_fn = const char* (*)();
 using plugin_add_fn = int (*)(int, int);
 
 class PluginLoader {
-public:
+  public:
     explicit PluginLoader(const std::string& path) {
 #ifdef _WIN32
         handle_ = LoadLibraryA(path.c_str());
@@ -70,9 +70,11 @@ public:
 #endif
     }
 
-    [[nodiscard]] bool is_loaded() const { return handle_ != nullptr; }
+    [[nodiscard]] bool is_loaded() const {
+        return handle_ != nullptr;
+    }
 
-private:
+  private:
     void* handle_ = nullptr;
 };
 
@@ -93,7 +95,7 @@ std::string find_plugin(const char* path, std::string_view name) {
     plugin_file_name.append(name);
     plugin_file_name.append(".so");
 #endif
-    
+
     // Build layout: plugin sits next to the executable.
     // Install layout (Linux/macOS): plugin lives in ../lib/ relative to bin/.
     for (auto&& candidate : {
@@ -108,11 +110,8 @@ std::string find_plugin(const char* path, std::string_view name) {
 }
 
 class Plugin {
-public:
-
-    explicit Plugin(std::string const& file)
-        : loader_(PluginLoader(file))
-    {
+  public:
+    explicit Plugin(std::string const& file) : loader_(PluginLoader(file)) {
         init_ = loader_.get_symbol<plugin_init_fn>("plugin_init");
         get_name_ = loader_.get_symbol<plugin_get_name_fn>("plugin_get_name");
         add_ = loader_.get_symbol<plugin_add_fn>("plugin_add");
@@ -124,7 +123,7 @@ public:
     Plugin& operator=(Plugin&&) = default;
     ~Plugin() = default;
 
-    auto error() const -> std::optional<std::string> {
+    [[nodiscard]] auto error() const -> std::optional<std::string> {
         if (!loader_.is_loaded()) {
             return "Could not load the plugin library.";
         }
@@ -135,44 +134,44 @@ public:
         return std::nullopt;
     }
 
-    int init() const {
+    [[nodiscard]] int init() const {
         return init_();
     }
 
-    auto get_name() const -> const char* {
+    [[nodiscard]] auto get_name() const -> const char* {
         return get_name_();
     }
 
-    bool has_add() const {
+    [[nodiscard]] bool has_add() const {
         return !!add_;
     }
 
-    int add(int a, int b) const {
+    [[nodiscard]] int add(int a, int b) const {
         if (!has_add()) {
             throw std::runtime_error("Plugin does not have a plugin_add!");
         }
         return add_(a, b);
     }
 
-private:
+  private:
     PluginLoader loader_;
     plugin_init_fn init_{nullptr};
     plugin_get_name_fn get_name_{nullptr};
     plugin_add_fn add_{nullptr};
 };
 
-int main(int argc, char* argv[]) {
+int main(int /*argc*/, char* argv[]) {
 
-    constexpr std::array<const char*, 2> plugin_names = {{ "plugin", "crash_reporter" }};
+    constexpr std::array<const char*, 2> plugin_names = {{"plugin", "crash_reporter"}};
 
     std::vector<Plugin> plugins;
-    for (const auto plugin_name: plugin_names) {
+    for (const auto* plugin_name : plugin_names) {
         auto plugin_path = find_plugin(argv[0], plugin_name);
         std::cout << "Loading plugin from: " << plugin_path << std::endl;
         plugins.emplace_back(plugin_path);
     }
 
-    for (const auto& plugin: plugins) {
+    for (const auto& plugin : plugins) {
         auto error = plugin.error();
         if (error) {
             std::cerr << error.value() << std::endl;
@@ -180,7 +179,7 @@ int main(int argc, char* argv[]) {
         }
     }
 
-    for (const auto& plugin: plugins) {
+    for (const auto& plugin : plugins) {
         int rc = plugin.init();
         if (rc != 0) {
             std::cerr << "plugin_init failed with code " << rc << std::endl;

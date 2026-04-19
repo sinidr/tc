@@ -3,7 +3,7 @@
 #include <cstdlib>
 
 void i_cause_a_segfault() {
-    int* ptr = reinterpret_cast<int*>(42);
+    int* ptr = reinterpret_cast<int*>(42); // NOLINT
     *ptr = 0;
 }
 
