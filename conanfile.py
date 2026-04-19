@@ -1,6 +1,7 @@
 
 from conan import ConanFile
 from conan.tools.cmake import CMake, CMakeDeps, CMakeToolchain, cmake_layout
+from conan.tools.files import copy
 
 class TcConan(ConanFile):
 
@@ -23,11 +24,7 @@ class TcConan(ConanFile):
         self.requires("cpptrace/1.0.4", visible=False)
 
     def layout(self):
-        compiler = str(self.settings.compiler)
-        build_type = str(self.settings.build_type).lower()
-
-        self.folders.build = f"build/{compiler}-{build_type}"
-        self.folders.generators = f"{self.folders.build}/generators"
+        cmake_layout(self)
 
     def generate(self):
         deps = CMakeDeps(self)
@@ -45,5 +42,19 @@ class TcConan(ConanFile):
         cmake = CMake(self)
         cmake.configure()
         cmake.build()
+ 
+    def package(self):
+        cmake = CMake(self)
+        cmake.install()
 
+    def package_info(self):
+        self.cpp_info.libs = ["challenge_project"]
 
+    def export_sources(self):
+        include_patterns = [
+            "app/*", "crash_reporter/*", "plugin/*", "tests/*",
+            "CMakeLists.txt"
+        ]
+
+        for export_source_pattern in include_patterns:
+            copy(self, export_source_pattern, self.recipe_folder, self.export_sources_folder)
