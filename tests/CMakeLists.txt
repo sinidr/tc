@@ -45,6 +45,15 @@ find_package(
 
 set(test_name "crash_reporter_test")
 
+set(crashing_app ${test_name}_app)
+
+add_executable(${crashing_app})
+
+target_sources(${crashing_app} 
+    PRIVATE 
+        test_crash_reporter_app.cpp
+)
+
 add_executable(${test_name})
 
 target_sources(${test_name}
@@ -65,14 +74,6 @@ add_test(
     WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY} # so we dont add the crash report in the user sources
 )
 
-set(crashing_app ${test_name}_app)
-
-add_executable(${crashing_app})
-
-target_sources(${crashing_app} 
-    PRIVATE 
-        test_crash_reporter_app.cpp
-)
 
 set_tests_properties(${test_name} 
     PROPERTIES

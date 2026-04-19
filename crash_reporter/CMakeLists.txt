@@ -14,3 +14,9 @@ target_link_libraries(${lib_name} PRIVATE
         tc::common
         cpptrace::cpptrace
 )
+
+install(TARGETS ${lib_name}
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+)
+

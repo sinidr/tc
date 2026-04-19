@@ -33,8 +33,12 @@ class TcConan(ConanFile):
         deps = CMakeDeps(self)
         deps.generate()
 
+        compiler = str(self.settings.compiler)
+        build_type = str(self.settings.build_type).lower()
+
         toolchain = CMakeToolchain(self)
-        toolchain.presets_prefix = str(self.settings.compiler)
+        toolchain.presets_prefix = compiler
+        toolchain.cache_variables["CMAKE_INSTALL_PREFIX"] = f"install/{compiler}-{build_type}"
         toolchain.generate()
     
     def build(self):
