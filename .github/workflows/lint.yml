@@ -11,6 +11,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.x'
+
       - name: Install clang-format clang-tidy
         run: |
           sudo apt-get update
@@ -19,6 +23,9 @@ jobs:
       - name: Check clang-format
         run: |
           find app tests plugins plugin include -name '*.cpp' -o -name '*.h' | xargs clang-format --dry-run -Werror
+
+      - name: Install Conan
+        run: pip install "conan>=2,<3"
 
       - name: Check clang-tidy
         run: |

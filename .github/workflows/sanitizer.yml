@@ -11,8 +11,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.x'
+
       - name: Install Conan
-        run: pip install conan==2
+        run: pip install "conan>=2,<3"
 
       - name: Configure GCC with Sanitizers
         run: conan install . --build=missing -pr .conan/profiles/gcc -DENABLE_SANITIZERS=ON
@@ -31,8 +35,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.x'
+
       - name: Install Conan
-        run: pip install conan==2
+        run: pip install "conan>=2,<3"
 
       - name: Install Clang
         run: sudo apt-get install -y clang-14
