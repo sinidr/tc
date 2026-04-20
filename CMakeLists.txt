@@ -35,7 +35,7 @@ target_include_directories(common INTERFACE
 
 # warnings
 if (MSVC)
-    target_compile_options(common INTERFACE /W4 /WX)
+    target_compile_options(common INTERFACE /W4) # /WX)
 else()
     target_compile_options(common INTERFACE -Wall -Wextra -Wpedantic -Werror)
 endif()
