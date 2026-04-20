@@ -66,15 +66,5 @@ private:
 };
 
 inline std::string get_plugin_path() {
-    const char* env = std::getenv("PLUGIN_PATH");
-    if (env) return env;
-
-    auto exe_dir = std::filesystem::path(".");
-#ifdef _WIN32
-    return (exe_dir / "plugin.dll").string();
-#elif defined(__APPLE__)
-    return (exe_dir / "libplugin.dylib").string();
-#else
-    return (exe_dir / "libplugin.so").string();
-#endif
+    return std::getenv("PLUGIN_PATH");
 }

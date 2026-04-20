@@ -34,5 +34,5 @@ TEST(CrashReporter, CrashingApp) {
     EXPECT_EQ(first_line, expected_first_line);
 
     // cleanup
-    std::filesystem::remove(STACKTRACE_FILE_NAME);    
+    std::filesystem::remove(STACKTRACE_FILE_NAME);
 }

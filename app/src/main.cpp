@@ -7,7 +7,6 @@
 #include <optional>
 #include <stdexcept>
 #include <string>
-#include <string_view>
 #include <vector>
 
 #ifdef _WIN32
@@ -160,13 +159,23 @@ class Plugin {
     plugin_add_fn add_{nullptr};
 };
 
-int main(int /*argc*/, char* argv[]) {
+int main(int argc, char* argv[]) {
 
-    constexpr std::array<const char*, 2> plugin_names = {{"plugin", "crash_reporter"}};
-
+    std::vector<std::string> plugin_names;
+    plugin_names.emplace_back("plugin");
+    plugin_names.emplace_back("crash_reporter");
+    for (int i = 1; i < argc; ++i) {
+        plugin_names.emplace_back(argv[i]);
+    }
+    
     std::vector<Plugin> plugins;
-    for (const auto* plugin_name : plugin_names) {
-        auto plugin_path = find_plugin(argv[0], plugin_name);
+    for (const auto& plugin_name : plugin_names) {
+        std::string plugin_path;
+        if (std::filesystem::exists(plugin_name)) {
+            plugin_path = plugin_name;
+        } else {
+            plugin_path = find_plugin(argv[0], plugin_name);
+        }
         std::cout << "Loading plugin from: " << plugin_path << std::endl;
         plugins.emplace_back(plugin_path);
     }

@@ -21,29 +21,46 @@ include(GNUInstallDirs)
 ################################
 # build common settings target #
 ################################
-add_library(tc_common_settings INTERFACE)
-add_library(tc::common ALIAS tc_common_settings)
+add_library(common INTERFACE)
+add_library(tc::common ALIAS common)
 
 # c++ 20
-target_compile_features(tc_common_settings INTERFACE cxx_std_20)
+target_compile_features(common INTERFACE cxx_std_20)
 
 # common include directories
-target_include_directories(tc_common_settings INTERFACE "plugin/include")
+target_include_directories(common INTERFACE 
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include>
+)
 
 if (ENABLE_SANITIZERS)
-    target_compile_options(tc_common_settings INTERFACE "-fsanitize=address")
-    target_link_options(tc_common_settings INTERFACE "-fsanitize=address")
+    target_compile_options(common INTERFACE "-fsanitize=address")
+    target_link_options(common INTERFACE "-fsanitize=address")
 endif()
 
 ###########
 # sources #
 ###########
 add_subdirectory(app)
-add_subdirectory(plugin)
-add_subdirectory(crash_reporter)
+add_subdirectory(plugins)
 
 #########
 # tests #
 #########
 include(CTest)
 add_subdirectory(tests)
+
+########################
+# some install targets #
+########################
+
+install(DIRECTORY include/plugin DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+
+install(TARGETS common
+    EXPORT tcTargets
+)
+
+install(EXPORT tcTargets
+    NAMESPACE tc::
+    DESTINATION lib/cmake/common
+)

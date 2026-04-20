@@ -2,6 +2,7 @@
 from conan import ConanFile
 from conan.tools.cmake import CMake, CMakeDeps, CMakeToolchain, cmake_layout
 from conan.tools.files import copy
+import os
 
 class TcConan(ConanFile):
 
@@ -34,7 +35,6 @@ class TcConan(ConanFile):
         build_type = str(self.settings.build_type).lower()
 
         toolchain = CMakeToolchain(self)
-        toolchain.presets_prefix = compiler
         toolchain.cache_variables["CMAKE_INSTALL_PREFIX"] = f"install/{compiler}-{build_type}"
         toolchain.generate()
     
@@ -48,11 +48,12 @@ class TcConan(ConanFile):
         cmake.install()
 
     def package_info(self):
-        self.cpp_info.libs = ["challenge_project"]
+        self.cpp_info.set_property("cmake_target_name", "tc::common")
+        self.runenv_info.append("TC_PATH", self.package_folder)
 
     def export_sources(self):
         include_patterns = [
-            "app/*", "crash_reporter/*", "plugin/*", "tests/*",
+            "app/*", "include/*", "plugins/*", "tests/*",
             "CMakeLists.txt"
         ]
 
