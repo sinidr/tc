@@ -39,7 +39,7 @@ set_tests_properties(${test_name} PROPERTIES
 find_package(
     Boost 
     CONFIG 
-    COMPONENTS process 
+    COMPONENTS process filesystem
     REQUIRED
 )
 
@@ -75,6 +75,7 @@ target_link_libraries(${test_name}
         tc::common
         GTest::gtest_main
         Boost::boost
+        Boost::filesystem
 )
 
 add_test(
