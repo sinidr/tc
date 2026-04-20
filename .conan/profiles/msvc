@@ -6,6 +6,3 @@ compiler.cppstd=20
 compiler.version=193
 compiler.runtime=dynamic
 os=Windows
-
-[conf]
-tools.cmake.cmaketoolchain:generator=Ninja
