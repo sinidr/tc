@@ -25,11 +25,11 @@ jobs:
           pip install "conan>=2,<3"
           conan profile detect          
           conan install . --build=missing --profile=.conan/profiles/gcc
-          cmake --preset conan-gcc-release -B build
+          cmake --preset conan-gcc-release
 
       - name: Check clang-format
         run: |
           find app tests plugins include -name '*.cpp' -o -name '*.h' | xargs clang-format --dry-run -Werror
 
       - name: Check clang-tidy
-        run: run-clang-tidy -p build
+        run: run-clang-tidy -p build/gcc/Release
