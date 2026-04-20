@@ -8,5 +8,4 @@ compiler.runtime=dynamic
 os=Windows
 
 [conf]
-tools.build:compiler_executables={"c": "cl", "cpp": "cl"}
-tools.cmake.cmaketoolchain:generator=Ninja
+tools.cmake.cmaketoolchain:generator=Visual Studio 17 2022
