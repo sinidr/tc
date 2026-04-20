@@ -33,6 +33,13 @@ target_include_directories(common INTERFACE
     $<INSTALL_INTERFACE:include>
 )
 
+# warnings
+if (MSVC)
+    target_compile_options(common INTERFACE /W4 /WX)
+else()
+    target_compile_options(common INTERFACE -Wall -Wextra -Wpedantic -Werror)
+endif()
+
 if (ENABLE_SANITIZERS)
     target_compile_options(common INTERFACE "-fsanitize=address")
     target_link_options(common INTERFACE "-fsanitize=address")

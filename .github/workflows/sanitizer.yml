@@ -25,13 +25,13 @@ jobs:
         run: conan install . --build=missing -pr .conan/profiles/gcc -DENABLE_SANITIZERS=ON
 
       - name: Configure CMake
-        run: cmake --preset conan-release
+        run: cmake --preset conan-gcc-release
 
       - name: Build
-        run: cmake --build --preset conan-release
+        run: cmake --build --preset conan-gcc-release
 
       - name: Test with ASan
-        run: ctest --preset conan-release --output-on-failure
+        run: ctest --preset conan-gcc-release --output-on-failure
 
   sanitizer-clang:
     runs-on: ubuntu-latest
@@ -55,10 +55,10 @@ jobs:
         run: conan install . --build=missing -pr .conan/profiles/clang -DENABLE_SANITIZERS=ON
 
       - name: Configure CMake
-        run: cmake --preset conan-release
+        run: cmake --preset conan-clang-release
 
       - name: Build
-        run: cmake --build --preset conan-release
+        run: cmake --build --preset conan-clang-release
 
       - name: Test with ASan
-        run: ctest --preset conan-release --output-on-failure
+        run: ctest --preset conan-clang-release --output-on-failure

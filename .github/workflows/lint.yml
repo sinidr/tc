@@ -22,7 +22,7 @@ jobs:
 
       - name: Check clang-format
         run: |
-          find app tests plugins plugin include -name '*.cpp' -o -name '*.h' | xargs clang-format --dry-run -Werror
+          find app tests plugins include -name '*.cpp' -o -name '*.h' | xargs clang-format --dry-run -Werror
 
       - name: Install Conan
         run: pip install "conan>=2,<3"
@@ -33,5 +33,5 @@ jobs:
       - name: Check clang-tidy
         run: |
           conan install . --build=missing -pr .conan/profiles/gcc
-          cmake --preset conan-release -B build
-          find app tests -name '*.cpp' | xargs -I{} clang-tidy -p build {} --
+          cmake --preset conan-gcc-release -B build
+          run-clang-tidy -p build
