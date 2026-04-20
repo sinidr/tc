@@ -25,13 +25,13 @@ jobs:
         run: conan install . --build=missing -pr .conan/profiles/gcc
 
       - name: Configure CMake
-        run: cmake --preset conan-release
+        run: cmake --preset conan-gcc-release
 
       - name: Build
-        run: cmake --build --preset conan-release
+        run: cmake --build --preset conan-gcc-release
 
       - name: Test
-        run: ctest --preset conan-release --output-on-failure
+        run: ctest --preset conan-gcc-release --output-on-failure
 
   build-clang:
     runs-on: ubuntu-latest
@@ -51,17 +51,20 @@ jobs:
       - name: Install Clang
         run: sudo apt-get install -y clang-14
 
+      - name: Install libc++
+        run: sudo apt-get install -y libc++-14-dev libc++abi-14-dev
+
       - name: Configure Clang
         run: conan install . --build=missing -pr .conan/profiles/clang
 
       - name: Configure CMake
-        run: cmake --preset conan-release
+        run: cmake --preset conan-clang-release
 
       - name: Build
-        run: cmake --build --preset conan-release
+        run: cmake --build --preset conan-clang-release
 
       - name: Test
-        run: ctest --preset conan-release --output-on-failure
+        run: ctest --preset conan-clang-release --output-on-failure
 
   build-msvc:
     runs-on: windows-latest
@@ -79,7 +82,7 @@ jobs:
         run: conan profile detect --force
 
       - name: Configure
-        run: conan install . --build=missing -s build_type=Release
+        run: conan install . --build=missing -pr .conan/profiles/msvc
 
       - name: Configure CMake
         run: cmake --preset conan-release

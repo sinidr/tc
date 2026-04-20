@@ -57,7 +57,7 @@ jobs:
 
       - name: Build (MSVC)
         run: |
-          conan install . --build=missing -s build_type=Release
+          conan install . --build=missing -pr .conan/profiles/msvc
           cmake --preset conan-release
           cmake --build --preset conan-release
           cmake --install --preset conan-release
