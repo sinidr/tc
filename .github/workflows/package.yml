@@ -21,24 +21,19 @@ jobs:
       - name: Configure Conan
         run: conan profile detect --force
 
-      - name: Build (GCC)
-        run: |
-          conan create . --build=missing -pr .conan/profiles/gcc
-          cmake --preset conan-release
-          cmake --build --preset conan-release
-          cmake --install --preset conan-release
+      - name: Create package (GCC)
+        run: conan create . --build=missing -pr .conan/profiles/gcc
 
-      - name: Package
+      - name: Archive Conan package
         run: |
-          cd install
-          tar czvf ../tc-linux-gcc.tar.gz *
-        shell: bash
+          PKG_PATH="$HOME/.conan2/p/tc/0.1/gcc/release/x86_64"
+          tar czvf tc-conan-package.tar.gz -C "$PKG_PATH" .
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: tc-linux-gcc
-          path: tc-linux-gcc.tar.gz
+          name: tc-conan-package
+          path: tc-conan-package.tar.gz
 
   package-windows:
     runs-on: windows-latest
@@ -55,19 +50,17 @@ jobs:
       - name: Configure Conan
         run: conan profile detect --force
 
-      - name: Build (MSVC)
-        run: |
-          conan create . --build=missing -pr .conan/profiles/msvc
-          cmake --preset conan-release
-          cmake --build --preset conan-release
-          cmake --install --preset conan-release
+      - name: Create package (MSVC)
+        run: conan create . --build=missing -pr .conan/profiles/msvc
 
-      - name: Package
+      - name: Archive Conan package
         run: |
-          Compress-Archive -Path install\* -DestinationPath tc-windows-msvc.zip
+          $pkgPath = "$env:USERPROFILE\.conan2\p\tc\0.1\msvc\release\x86_64"
+          Compress-Archive -Path "$pkgPath\*" -DestinationPath tc-conan-package.zip
+        shell: pwsh
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: tc-windows-msvc
-          path: tc-windows-msvc.zip
+          name: tc-conan-package-windows
+          path: tc-conan-package.zip
