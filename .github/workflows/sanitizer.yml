@@ -34,7 +34,7 @@ jobs:
         run: ctest --preset conan-gcc-release --output-on-failure
 
   sanitizer-clang:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
 
