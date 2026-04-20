@@ -2,22 +2,22 @@
 
 #include <cpptrace/basic.hpp>
 #include <cpptrace/cpptrace.hpp>
-#include <fstream>
 #include <csignal>
 #include <cstdlib>
+#include <fstream>
 
 namespace {
 
-    void signal_handler(int sig) {
-        auto trace = cpptrace::generate_trace();
+void signal_handler(int sig) {
+    auto trace = cpptrace::generate_trace();
 
-        std::ofstream out("stacktrace.txt");
-        out << "Caught signal: " << sig << "\n";
-        out << trace << std::endl;
-        out.close();
+    std::ofstream out("stacktrace.txt");
+    out << "Caught signal: " << sig << "\n";
+    out << trace << std::endl;
+    out.close();
 
-        std::_Exit(1);
-    }
+    std::_Exit(1);
+}
 
 } // namespace
 
@@ -31,5 +31,4 @@ PLUGIN_API int plugin_init(void) {
 PLUGIN_API const char* plugin_get_name(void) {
     return "crash_reporter";
 }
-
 }

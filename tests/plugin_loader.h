@@ -6,9 +6,9 @@
 #include <string>
 
 #ifdef _WIN32
-    #include <windows.h>
+#include <windows.h>
 #else
-    #include <dlfcn.h>
+#include <dlfcn.h>
 #endif
 
 using plugin_init_fn = int (*)();
@@ -16,7 +16,7 @@ using plugin_get_name_fn = const char* (*)();
 using plugin_add_fn = int (*)(int, int);
 
 class PluginLoader {
-public:
+  public:
     explicit PluginLoader(const std::string& path) {
 #ifdef _WIN32
         handle_ = LoadLibraryA(path.c_str());
@@ -61,7 +61,7 @@ public:
 
     [[nodiscard]] bool is_loaded() const { return handle_ != nullptr; }
 
-private:
+  private:
     void* handle_ = nullptr;
 };
 
