@@ -27,6 +27,9 @@ jobs:
       - name: Install Conan
         run: pip install "conan>=2,<3"
 
+      - name: Configure Conan
+        run: conan profile detect
+
       - name: Check clang-tidy
         run: |
           conan install . --build=missing -pr .conan/profiles/gcc

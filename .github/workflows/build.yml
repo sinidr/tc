@@ -18,6 +18,9 @@ jobs:
       - name: Install Conan
         run: pip install "conan>=2,<3"
 
+      - name: Configure Conan
+        run: conan profile detect
+
       - name: Configure GCC
         run: conan install . --build=missing --profile=.conan/profiles/gcc
 
@@ -41,6 +44,9 @@ jobs:
 
       - name: Install Conan
         run: pip install "conan>=2,<3"
+
+      - name: Configure Conan
+        run: conan profile detect
 
       - name: Install Clang
         run: sudo apt-get install -y clang-14
