@@ -72,7 +72,9 @@ jobs:
         with:
           python-version: '3.x'
 
-      - uses: ilammy/msvc-dev-cmd@v1
+      - uses: ilammy/msvc-dev-cmd@v1  
+        with:
+          arch: x64
 
       - name: Install Conan
         run: pip install "conan>=2,<3"
