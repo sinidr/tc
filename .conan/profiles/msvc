@@ -6,3 +6,7 @@ compiler.cppstd=20
 compiler.version=193
 compiler.runtime=dynamic
 os=Windows
+
+[conf]
+tools.build:compiler_executables={"c": "cl", "cpp": "cl"}
+tools.cmake.cmaketoolchain:generator=Ninja

@@ -18,9 +18,6 @@ jobs:
       - name: Install Conan
         run: pip install "conan>=2,<3"
 
-      - name: Configure Conan
-        run: conan profile detect --force
-
       - name: Create package (GCC)
         run: conan create . --build=missing -pr .conan/profiles/gcc
 
