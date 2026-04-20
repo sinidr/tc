@@ -1,0 +1,27 @@
+name: Lint
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install clang-format clang-tidy
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang-format clang-tidy
+
+      - name: Check clang-format
+        run: |
+          find app tests plugins plugin include -name '*.cpp' -o -name '*.h' | xargs clang-format --dry-run -Werror
+
+      - name: Check clang-tidy
+        run: |
+          conan install . --build=missing -pr .conan/profiles/gcc
+          cmake --preset conan-release -B build
+          find app tests -name '*.cpp' | xargs -I{} clang-tidy -p build {} --
