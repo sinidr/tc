@@ -17,21 +17,19 @@ jobs:
 
       - name: Install clang-format clang-tidy
         run: |
-          sudo apt-get update
-          sudo apt-get install -y clang-format clang-tidy
+          sudo apt update
+          sudo apt install -y clang-format clang-tidy
+
+      - name: Setup project
+        run: |
+          pip install "conan>=2,<3"
+          conan profile detect          
+          conan install . --build=missing --profile=.conan/profiles/gcc
+          cmake --preset conan-gcc-release -B build
 
       - name: Check clang-format
         run: |
           find app tests plugins include -name '*.cpp' -o -name '*.h' | xargs clang-format --dry-run -Werror
 
-      - name: Install Conan
-        run: pip install "conan>=2,<3"
-
-      - name: Configure Conan
-        run: conan profile detect
-
       - name: Check clang-tidy
-        run: |
-          conan install . --build=missing -pr .conan/profiles/gcc
-          cmake --preset conan-gcc-release -B build
-          run-clang-tidy -p build
+        run: run-clang-tidy -p build
