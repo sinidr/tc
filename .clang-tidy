@@ -25,7 +25,7 @@ Checks: "*,
         -readability-implicit-bool-conversion,
         -concurrency-mt-unsafe,
         -performance-avoid-endl,
-        -misc-include-cleaner,
+        -misc-*
 
 "
 WarningsAsErrors: '*'
