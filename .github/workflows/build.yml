@@ -46,7 +46,7 @@ jobs:
         run: pip install "conan>=2,<3"
 
       - name: Install Clang
-        run: sudo apt-get install -y clang-14 #libc++-14-dev libc++abi-14-dev
+        run: sudo apt install -y clang-14 #libc++-14-dev libc++abi-14-dev
 
       - name: Configure Conan
         run: conan profile detect
@@ -72,7 +72,7 @@ jobs:
         with:
           python-version: '3.x'
 
-      - uses: microsoft/setup-msvc@v1
+      - uses: TheMrMilchmann/setup-msvc-dev@v4
         with:
           arch: x64
 

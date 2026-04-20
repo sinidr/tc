@@ -18,8 +18,11 @@ jobs:
       - name: Install Conan
         run: pip install "conan>=2,<3"
 
+      - name: Configure Conan
+        run: conan profile detect
+
       - name: Create package (GCC)
-        run: conan create . --build=missing -pr .conan/profiles/gcc
+        run: conan create . --build=missing --profile=.conan/profiles/gcc
 
       - name: Archive Conan package
         run: |
@@ -44,8 +47,11 @@ jobs:
       - name: Install Conan
         run: pip install "conan>=2,<3"
 
+      - name: Configure Conan
+        run: conan profile detect
+
       - name: Create package (MSVC)
-        run: conan create . --build=missing -pr .conan/profiles/msvc
+        run: conan create . --build=missing --profile=.conan/profiles/msvc
 
       - name: Archive Conan package
         run: |

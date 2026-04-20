@@ -22,10 +22,10 @@ jobs:
         run: conan profile detect
 
       - name: Configure GCC with Sanitizers
-        run: conan install . --build=missing -pr .conan/profiles/gcc -DENABLE_SANITIZERS=ON
+        run: conan install . --build=missing --profile=.conan/profiles/gcc
 
       - name: Configure CMake
-        run: cmake --preset conan-gcc-release
+        run: cmake --preset conan-gcc-release -DENABLE_SANITIZERS=ON
 
       - name: Build
         run: cmake --build --preset conan-gcc-release
@@ -52,10 +52,10 @@ jobs:
         run: sudo apt-get install -y clang-14
 
       - name: Configure Clang with Sanitizers
-        run: conan install . --build=missing -pr .conan/profiles/clang -DENABLE_SANITIZERS=ON
+        run: conan install . --build=missing --profile=.conan/profiles/clang
 
       - name: Configure CMake
-        run: cmake --preset conan-clang-release
+        run: cmake --preset conan-clang-release -DENABLE_SANITIZERS=ON
 
       - name: Build
         run: cmake --build --preset conan-clang-release

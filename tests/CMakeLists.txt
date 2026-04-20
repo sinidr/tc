@@ -58,6 +58,11 @@ target_link_libraries(${crashing_app} PRIVATE
     tc::common  # necessary if building with asan
 )
 
+if (NOT MSVC)
+    # a gcc warning prevents the segfault
+    target_compile_options(${crashing_app} PRIVATE -w)
+endif()
+
 add_executable(${test_name})
 
 target_sources(${test_name}
