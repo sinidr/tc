@@ -51,9 +51,6 @@ jobs:
       - name: Install Clang
         run: sudo apt-get install -y clang-14
 
-      - name: Install libc++
-        run: sudo apt-get install -y libc++-14-dev libc++abi-14-dev
-
       - name: Configure Clang
         run: conan install . --build=missing -pr .conan/profiles/clang
 
