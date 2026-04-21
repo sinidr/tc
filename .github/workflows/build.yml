@@ -18,8 +18,8 @@ jobs:
       - name: Install Conan
         run: pip install "conan>=2,<3"
 
-      - name: Configure Conan
-        run: conan profile detect
+      #- name: Configure Conan
+      #  run: conan profile detect
 
       - name: Configure GCC
         run: conan install . --build=missing --profile=.conan/profiles/gcc
@@ -48,8 +48,8 @@ jobs:
       - name: Install Clang
         run: sudo apt install -y clang-14 #libc++-14-dev libc++abi-14-dev
 
-      - name: Configure Conan
-        run: conan profile detect
+      #- name: Configure Conan
+      #  run: conan profile detect
 
       - name: Configure Clang
         run: conan install . --build=missing --profile=.conan/profiles/clang -s compiler.libcxx=libstdc++
@@ -79,8 +79,8 @@ jobs:
       - name: Install Conan
         run: pip install "conan>=2,<3"
 
-      - name: Configure Conan
-        run: conan profile detect
+      #- name: Configure Conan
+      #  run: conan profile detect
 
       - name: Configure
         run: conan install . --build=missing --profile=.conan/profiles/msvc

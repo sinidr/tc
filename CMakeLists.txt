@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.21)
 
 # tc for 'Technical Challenge'
-project(tc VERSION 1.0 LANGUAGES CXX)
+project(tc VERSION 0.1 LANGUAGES CXX)
 
 ###########
 # options #
@@ -17,6 +17,7 @@ set(CMAKE_CXX_VISIBILITY_PRESET "hidden")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 include(GNUInstallDirs)
+include(CPack)
 
 ################################
 # build common settings target #
@@ -69,5 +70,5 @@ install(TARGETS common
 
 install(EXPORT tcTargets
     NAMESPACE tc::
-    DESTINATION lib/cmake/common
+    DESTINATION lib/cmake/${PROJECT_NAME}
 )
