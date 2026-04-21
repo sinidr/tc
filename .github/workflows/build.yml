@@ -1,0 +1,95 @@
+name: Build & Test
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build-gcc:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.x'
+
+      - name: Install Conan
+        run: pip install "conan>=2,<3"
+
+      - name: Configure Conan
+        run: conan profile detect
+
+      - name: Configure GCC
+        run: conan install . --build=missing --profile=.conan/profiles/gcc
+
+      - name: Configure CMake
+        run: cmake --preset conan-gcc-release
+
+      - name: Build
+        run: cmake --build --preset conan-gcc-release
+
+      - name: Test
+        run: ctest --preset conan-gcc-release --output-on-failure
+
+  build-clang:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.x'
+
+      - name: Install Conan
+        run: pip install "conan>=2,<3"
+
+      - name: Install Clang
+        run: sudo apt install -y clang-14 #libc++-14-dev libc++abi-14-dev
+
+      - name: Configure Conan
+        run: conan profile detect
+
+      - name: Configure Clang
+        run: conan install . --build=missing --profile=.conan/profiles/clang -s compiler.libcxx=libstdc++
+
+      - name: Configure CMake
+        run: cmake --preset conan-clang-release
+
+      - name: Build
+        run: cmake --build --preset conan-clang-release
+
+      - name: Test
+        run: ctest --preset conan-clang-release --output-on-failure
+
+  build-msvc:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.x'
+
+      - uses: ilammy/msvc-dev-cmd@v1  
+        with:
+          arch: x64
+
+      - name: Install Conan
+        run: pip install "conan>=2,<3"
+
+      - name: Configure Conan
+        run: conan profile detect
+
+      - name: Configure
+        run: conan install . --build=missing --profile=.conan/profiles/msvc
+
+      - name: Configure CMake
+        run: cmake --preset conan-release
+
+      - name: Build
+        run: cmake --build --preset conan-release
+
+      - name: Test
+        run: ctest --preset conan-release --output-on-failure

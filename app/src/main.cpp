@@ -69,9 +69,7 @@ class PluginLoader {
 #endif
     }
 
-    [[nodiscard]] bool is_loaded() const {
-        return handle_ != nullptr;
-    }
+    [[nodiscard]] bool is_loaded() const { return handle_ != nullptr; }
 
   private:
     void* handle_ = nullptr;
@@ -133,17 +131,11 @@ class Plugin {
         return std::nullopt;
     }
 
-    [[nodiscard]] int init() const {
-        return init_();
-    }
+    [[nodiscard]] int init() const { return init_(); }
 
-    [[nodiscard]] auto get_name() const -> const char* {
-        return get_name_();
-    }
+    [[nodiscard]] auto get_name() const -> const char* { return get_name_(); }
 
-    [[nodiscard]] bool has_add() const {
-        return !!add_;
-    }
+    [[nodiscard]] bool has_add() const { return !!add_; }
 
     [[nodiscard]] int add(int a, int b) const {
         if (!has_add()) {
@@ -167,7 +159,7 @@ int main(int argc, char* argv[]) {
     for (int i = 1; i < argc; ++i) {
         plugin_names.emplace_back(argv[i]);
     }
-    
+
     std::vector<Plugin> plugins;
     for (const auto& plugin_name : plugin_names) {
         std::string plugin_path;

@@ -1,0 +1,64 @@
+name: Sanitizer
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  sanitizer-gcc:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.x'
+
+      - name: Install Conan
+        run: pip install "conan>=2,<3"
+
+      - name: Configure Conan
+        run: conan profile detect
+
+      - name: Configure GCC with Sanitizers
+        run: conan install . --build=missing --profile=.conan/profiles/gcc
+
+      - name: Configure CMake
+        run: cmake --preset conan-gcc-release -DENABLE_SANITIZERS=ON
+
+      - name: Build
+        run: cmake --build --preset conan-gcc-release
+
+      - name: Test with ASan
+        run: ctest --preset conan-gcc-release --output-on-failure
+
+  sanitizer-clang:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.x'
+
+      - name: Install Conan
+        run: pip install "conan>=2,<3"
+
+      - name: Configure Conan
+        run: conan profile detect
+
+      - name: Install Clang
+        run: sudo apt-get install -y clang-14
+
+      - name: Configure Clang with Sanitizers
+        run: conan install . --build=missing --profile=.conan/profiles/clang -s compiler.libcxx=libstdc++
+
+      - name: Configure CMake
+        run: cmake --preset conan-clang-release -DENABLE_SANITIZERS=ON
+
+      - name: Build
+        run: cmake --build --preset conan-clang-release
+
+      - name: Test with ASan
+        run: ctest --preset conan-clang-release --output-on-failure

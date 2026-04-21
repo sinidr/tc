@@ -4,18 +4,15 @@
 
 namespace {
 
-
 class PluginTest : public ::testing::Test {
-protected:
+  protected:
     void SetUp() override {
         loader_ = std::make_unique<PluginLoader>(get_plugin_path());
         ASSERT_TRUE(loader_->is_loaded()) << "Plugin library not found. "
-            "Set PLUGIN_PATH or run from the build/bin directory.";
+                                             "Set PLUGIN_PATH or run from the build/bin directory.";
     }
 
-    void TearDown() override {
-        loader_.reset();
-    }
+    void TearDown() override { loader_.reset(); }
 
     std::unique_ptr<PluginLoader> loader_;
 };

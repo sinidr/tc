@@ -3,7 +3,8 @@ BasedOnStyle: LLVM
 IndentWidth: 4
 ColumnLimit: 100
 BreakBeforeBraces: Attach
-AllowShortFunctionsOnASingleLine: Empty
+AllowShortFunctionsOnASingleLine: Inline
+IndentPPDirectives: None
 IndentWrappedFunctionNames: false
 PointerAlignment: Left
 AllowShortIfStatementsOnASingleLine: true

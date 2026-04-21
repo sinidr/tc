@@ -1,0 +1,35 @@
+name: Lint
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.x'
+
+      - name: Install clang-format clang-tidy
+        run: |
+          sudo apt update
+          sudo apt install -y clang-format clang-tidy
+
+      - name: Setup project
+        run: |
+          pip install "conan>=2,<3"
+          conan profile detect          
+          conan install . --build=missing --profile=.conan/profiles/gcc
+          cmake --preset conan-gcc-release
+
+      - name: Check clang-format
+        run: |
+          find app tests plugins include -name '*.cpp' -o -name '*.h' | xargs clang-format --dry-run -Werror
+
+      - name: Check clang-tidy
+        run: run-clang-tidy -p build/gcc/Release
