@@ -23,7 +23,7 @@ jobs:
 
       - name: Create package (GCC)
         run: |
-          conan install . --profile=.conan/profiles/gcc
+          conan install . --profile=.conan/profiles/gcc --build=missing
           cmake --preset conan-gcc-release -DCMAKE_INSTALL_PREFIX=install
           cmake --build --preset conan-gcc-release --target install
 
@@ -53,7 +53,7 @@ jobs:
 
       - name: Create package (MSVC)
         run: |
-          conan install . --profile=.conan/profiles/msvc
+          conan install . --profile=.conan/profiles/msvc --build=missing
           cmake --preset conan-release -DCMAKE_INSTALL_PREFIX=install
           cmake --build --preset conan-release --target install
 
