@@ -22,18 +22,19 @@ jobs:
         run: conan profile detect
 
       - name: Create package (GCC)
-        run: conan create . --build=missing --profile=.conan/profiles/gcc
+        run: |
+          conan install . --profile=.conan/profiles/gcc
+          cmake --preset conan-gcc-release -DCMAKE_INSTALL_PREFIX=install
+          cmake --build --preset conan-gcc-release --target install
 
       - name: Archive Conan package
-        run: |
-          PKG_PATH="$HOME/.conan2/p/tc/0.1/gcc/release/x86_64"
-          tar czvf tc-conan-package.tar.gz -C "$PKG_PATH" .
+        run: tar czvf tc.tar.gz install/
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: tc-conan-package
-          path: tc-conan-package.tar.gz
+          name: tc
+          path: tc.tar.gz
 
   package-windows:
     runs-on: windows-latest
@@ -51,12 +52,13 @@ jobs:
         run: conan profile detect
 
       - name: Create package (MSVC)
-        run: conan create . --build=missing --profile=.conan/profiles/msvc
+        run: |
+          conan install . --profile=.conan/profiles/msvc
+          cmake --preset conan-release -DCMAKE_INSTALL_PREFIX=install
+          cmake --build --preset conan-release --target install
 
       - name: Archive Conan package
-        run: |
-          $pkgPath = "$env:USERPROFILE\.conan2\p\tc\0.1\msvc\release\x86_64"
-          Compress-Archive -Path "$pkgPath\*" -DestinationPath tc-conan-package.zip
+        run: Compress-Archive -Path "install" -DestinationPath tc.zip
         shell: pwsh
 
       - name: Upload Artifact

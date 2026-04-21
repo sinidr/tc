@@ -52,7 +52,7 @@ jobs:
         run: sudo apt-get install -y clang-14
 
       - name: Configure Clang with Sanitizers
-        run: conan install . --build=missing --profile=.conan/profiles/clang
+        run: conan install . --build=missing --profile=.conan/profiles/clang -s compiler.libcxx=libstdc++
 
       - name: Configure CMake
         run: cmake --preset conan-clang-release -DENABLE_SANITIZERS=ON
